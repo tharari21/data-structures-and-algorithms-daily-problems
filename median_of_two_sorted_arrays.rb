@@ -21,6 +21,7 @@ def median_of_two_sorted_arrays
 end
 
 def more_efficient_median_of_two_sorted_arrays(x,y)
+    # Explained - https://www.youtube.com/watch?v=q6IEA26hvXc
     # O(log(n+m))
     x,y = nums1,nums2
     total = x.length + y.length
