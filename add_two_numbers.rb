@@ -12,9 +12,13 @@ def add_two_numbers(l1, l2)
     # Note that a ruby array only accomodates 3 elements until it has to copy it's elements to another array of bigger size
     # What it does is copies the elements to another array and increases the capacity (i.e. uses more memory) so that we can store more
     # elements without having to copy to another array.
+	# pointer to head of l1
     cur1 = l1
+	# pointer to head of l2
     cur2 = l2
+	# carry digit that will be passed over each iteration
     carry = 0
+	
     # result = []
     dummy = ListNode.new
     result = dummy
