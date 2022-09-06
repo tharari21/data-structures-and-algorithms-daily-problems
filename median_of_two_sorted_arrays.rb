@@ -20,53 +20,47 @@ def median_of_two_sorted_arrays
     end
 end
 
+
 def more_efficient_median_of_two_sorted_arrays(nums1,nums2)
     # Explained - https://www.youtube.com/watch?v=q6IEA26hvXc
     # O(log(n+m))
     x,y = nums1,nums2
-    total = x.length + y.length
-    half = total / 2
-    # x is the smaller array
     if y.length < x.length
         x,y = y,x
-        # temp = x
-        # x = y
-        # y = x
     end
-    
-    l = 0
-    r = x.length-1
+    total = x.length + y.length
+    # partition x + partition y must add up to half
+    half = total / 2
 
-    # we return from this loop the median so it's fine to just say while true
+    l,r = 0, x.length-1
     while true
-        partition_x = (l+r) / 2
-        partition_y = half - partition_x - 2 # half is not 0-indexed and neither is i so subtract 2
+        # px + py must eqal half
+        # partition x - the smaller array
+        px = (l+r) / 2
+        # partition y - the larger array. We need px+py to equal to half
+        py = half - px - 2
 
-        # These can be out of bounds so we need to check
-        left_x = partition_x > -1 ? x[partition_x] : -10000000.0
-        left_y = partition_y > -1 ? y[partition_y] : -10000000.0
-        right_x = partition_x+1 < x.length ? x[partition_x+1] : 10000000.0
-        right_y = partition_y+1 < y.length ? y[partition_y+1] : 10000000.0
-        
-        # partition is correct
-        if left_x <= right_y && left_y <= right_x
-            # odd
+        # get elements to left of px - if we are out of bounds then let's call it a really small number
+        lx = px > -1 ? x[px] : -1000000000.0
+        ly = py > -1 ? y[py] : -1000000000.0
+        # get elements to right of px - if we are out of bounds then let's call it a really large number
+        rx = px + 1 < x.length ? x[px+1] : 1000000000.0
+        ry = py + 1 < y.length ? y[py+1] : 1000000000.0
+
+        # if element to the left of px is smaller than element to right of py
+        # and element to the left of py is smaller than element to right of px
+        if lx <= ry && ly <= rx
+            # Partitions are in the right place, find median
             if total % 2 == 1
-                return [right_x, right_y].min
+                return [rx,ry].min
+            return ([lx,ly].max.to_f + [rx,ry].min.to_f) / 2.0
             end
-            return ([left_x,left_y].max.to_f + [right_x,right_y].min.to_f) / 2.0
-            
-        elsif left_x > right_y
-            r = partition_x - 1
-        else
-            l = partition_x + 1
+        elsif lx > ry
+            r = px - 1
+        elsif ly < rx # else
+            l = px + 1
         end
-
+        
     end
-
-
 end
-
-# def more_efficient_median_of_two_sorted_arrays(x,y)
-
-# end
+p more_efficient_median_of_two_sorted_arrays([-1,0,0,7,9], [0,1,3,5])
